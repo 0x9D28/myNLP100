@@ -23,6 +23,7 @@ for i, line in enumerate(infile, start=1):
         token = rm_head.sub(repl='\g<1>', string=token)
         token = rm_tail.sub(repl='\g<1>', string=token)
         outfile.write(token + " ")
+    outfile.write("\n")
     if i % 50000 == 0:
         print("iter: {} ({}%)".format(i, round(100*i/2875326, 2)))
 infile.close()
