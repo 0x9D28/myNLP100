@@ -30,8 +30,11 @@ if __name__ == '__main__':
     for term, idx in idx.items():
         rslt_dic[term] = cos_sim(england_vec, X[idx])
     
-    for i, t_s in enumerate(sorted(rslt_dic.items(), key=lambda x: -x[1])):
+    for i, t_s in enumerate(sorted(rslt_dic.items(), key=lambda x: -x[1]),
+                            start=0):
         term, sim = t_s
+        if term == sys.argv[2]:
+            continue
         print("{}. {}: {}".format(i, term, sim))
         if i >= 10:
             break
