@@ -11,6 +11,7 @@ $ python3 no83.py [input no.82 output] [number of no.82 output lines (gotten by 
 import sys
 from collections import defaultdict, Counter
 import os
+import pickle
 
 infile = open(sys.argv[1], 'rt')
 outdir = sys.argv[4]
@@ -43,41 +44,25 @@ print("voc size: {}".format(len(ft)))
 
 # write data as txt file
 print("start writing N")
-with open(os.path.join(outdir, 'N.txt'), 'wt') as f:
-    f.write(str(N))
+with open(os.path.join(outdir, 'N.pkl'), 'wb') as f:
+    pickle.dump(N, f)
 print("written N")
 del N
 
 print("start writing f(t,*)")
-with open(os.path.join(outdir, 'ft.txt'), 'wt') as f:
-    length = len(ft)
-    for i, k_v in enumerate(ft.items(), start=1):
-        word, freq = k_v
-        f.write("{}:{}\n".format(word, freq))
-        if i % 10**5 == 0:
-            print("writing f(t,*): {}%".format(100*i/length))
+with open(os.path.join(outdir, 'ft.pkl'), 'wb') as f:
+    pickle.dump(ft, f)
 print("written f(t,*)")
 del ft
 
 print("start writing f(*,c)")
-with open(os.path.join(outdir, 'fc.txt'), 'wt') as f:
-    length = len(fc)
-    for i, k_v in enumerate(fc.items(), start=1):
-        word, freq = k_v
-        f.write("{}:{}\n".format(word, freq))
-        if i % 10**5 == 0:
-            print("writing f(*,c): {}%".format(100*i/length))
+with open(os.path.join(outdir, 'fc.pkl'), 'wb') as f:
+    pickle.dump(fc, f)
 print("written f(*,c)")
 del fc
 
 print("start writing f(t,c)")
-with open(os.path.join(outdir, 'ftc.txt'), 'wt') as f:
-    length = len(ftc)
-    for i, k_v in enumerate(ftc.items(), start=1):
-        word, context = k_v
-        context = ["{}:{}".format(k, v) for k, v in context.items()]
-        f.write("{}\t{}\n".format(word, ",".join(context)))
-        if i % 10**5 == 0:
-            print("writing f(t,c): {}%".format(100*i/length))
+with open(os.path.join(outdir, 'ftc.pkl'), 'wb') as f:
+    pickle.dump(ftc, f)
 print("written f(t,c)")
 
