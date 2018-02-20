@@ -7,12 +7,15 @@ from no41 import Chunk, load_cabocha
 import sys
 
 
-def does_contain_pos(chunk, pos):
-    '''Does the chunk contain the POS?'''
+def search_pos(chunk, pos, bool=True):
+    '''Does the chunk contain the POS?
+       if bool == True, return True/False
+       else return morph s.t. morph.pos == "pos"
+    '''
     for morph in chunk.morphs:
         if morph.pos == pos:
-            return True
-    return False
+            return True if bool else morph
+    return False if bool else None
 
 
 if __name__ == '__main__':
@@ -24,7 +27,7 @@ if __name__ == '__main__':
         sent2 = sent
         for chunk in sent:
             for chunk2 in sent2:
-                if chunk.dst == chunk2.idx and does_contain_pos(chunk, "名詞") and does_contain_pos(chunk2, "動詞"):
+                if chunk.dst == chunk2.idx and search_pos(chunk, "名詞") and search_pos(chunk2, "動詞"):
                     surface = "".join([morph.surface for morph in chunk.morphs if morph.pos != "記号"])
                     surface2 = "".join([morph.surface for morph in chunk2.morphs if morph.pos != "記号"])
                     print("{}\t{}".format(surface, surface2))
