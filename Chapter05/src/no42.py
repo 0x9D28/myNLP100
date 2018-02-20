@@ -17,7 +17,7 @@ if __name__ == '__main__':
         for chunk in sent:
             for chunk2 in sent2:
                 if chunk.dst == chunk2.idx:
-                    surface = "".join([morph.surface for morph in chunk.morphs])
-                    surface2 = "".join([morph.surface for morph in chunk2.morphs])
+                    surface = "".join([morph.surface for morph in chunk.morphs if morph.pos != "記号"])
+                    surface2 = "".join([morph.surface for morph in chunk2.morphs if morph.pos != "記号"])
                     print("{}\t{}".format(surface, surface2))
                     break
