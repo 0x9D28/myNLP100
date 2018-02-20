@@ -28,6 +28,7 @@ class Chunk(object):
                 srcs.append(int(header_line[1]))
         self.srcs = srcs
         self.morphs = [Morph(line) for line in chunk_lines[1:]]
+        self.surface = "".join([morph.surface for morph in self.morphs])
     def __repr__(self):
         surfaces = "".join([morph.surface for morph in self.morphs])
         srcs = ",".join([str(src) for src in self.srcs]) if self.srcs else "nan"
