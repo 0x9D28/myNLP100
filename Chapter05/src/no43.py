@@ -7,15 +7,27 @@ from no41 import Chunk, load_cabocha
 import sys
 
 
-def search_pos(chunk, pos, bool=True):
+def search_pos(chunks, pos, pos1='', base='', fmt='bool'):
     '''Does the chunk contain the POS?
-       if bool == True, return True/False
-       else return morph s.t. morph.pos == "pos"
+
     '''
-    for morph in chunk.morphs:
-        if morph.pos == pos:
-            return True if bool else morph
-    return False if bool else None
+    if type(chunks) is not list:
+        chunks = [chunks]
+    for chunk in chunks:
+        if type(chunk) is not Chunk:
+            return False if fmt == 'bool' else None
+        for morph in chunk.morphs:
+            if (morph.pos == pos and not pos1 and not base)\
+                or (morph.pos == pos and morph.pos1 == pos1 and not base)\
+                or (morph.pos == pos and not pos1 and morph.base == base)\
+                or (morph.pos == pos and morph.pos1 == pos1 and morph.base == base):
+                if fmt == 'bool':
+                    return True
+                elif fmt == 'morph':
+                    return morph
+                elif fmt == 'chunk':
+                    return chunk
+    return False if fmt == 'bool' else None
 
 
 if __name__ == '__main__':
