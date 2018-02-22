@@ -31,7 +31,7 @@ def search_pos(chunks, pos, pos1='', base='', fmt='bool'):
 
 
 if __name__ == '__main__':
-    f = open('../data/neko.txt.cabocha', 'rt', encoding='utf8')
+    f = open(sys.argv[1], 'rt')
     sents = load_cabocha(f)
     f.close()
     # import pdb; pdb.set_trace()

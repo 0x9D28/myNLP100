@@ -65,25 +65,20 @@ def does_merge(path1, path2):
     else:
         longer_path = path2
         shorter_path = path1
-    # import pdb; pdb.set_trace()
-    try:
-        if shorter_path[0] in longer_path:
-            return None
-        else:
-            for node in shorter_path:
-                if node in longer_path:
-                    return longer_path[longer_path.index(node)]
-    except TypeError:
-        print("longer: {}".format(longer_path))
-        print("shorter: {}".format(shorter_path))
+    if shorter_path[0] in longer_path:
+        return None
+    else:
+        for node in shorter_path:
+            if node in longer_path:
+                return longer_path[longer_path.index(node)]
 
 
 
 if __name__ == '__main__':
-    infile = open('../data/neko.txt.cabocha', 'rt', encoding='utf8')
+    infile = open(sys.argv[1], 'rt')
     sents = load_cabocha(infile)
     infile.close()
-    outfile = open('../data/out49.txt', 'wt', encoding='utf8')
+    outfile = open(sys.argv[2], 'wt')
     # import pdb; pdb.set_trace()
     for sent in sents:
         sent2 = sent

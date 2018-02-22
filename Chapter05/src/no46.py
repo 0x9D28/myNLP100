@@ -19,10 +19,10 @@ import sys
 
 
 if __name__ == '__main__':
-    infile = open('../data/neko.txt.cabocha', 'rt', encoding='utf8')
+    infile = open(sys.argv[1], 'rt')
     sents = load_cabocha(infile)
     infile.close()
-    outfile = open('../data/out46.txt', 'wt', encoding='utf8')
+    outfile = open(sys.argv[2], 'wt')
     # import pdb; pdb.set_trace()
     for sent in sents:
         sent2 = sent
