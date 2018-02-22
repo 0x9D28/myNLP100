@@ -53,6 +53,31 @@ def replace_morph(chunk, pos, repl):
     return "".join(rslt)
 
 
+def does_merge(path1, path2):
+    '''
+    does separated branches merge on halfway?
+    if yes, return a node on which branches merge
+    else, return None
+    '''
+    if len(path1) >= len(path2):
+        longer_path = path1
+        shorter_path = path2
+    else:
+        longer_path = path2
+        shorter_path = path1
+    # import pdb; pdb.set_trace()
+    try:
+        if shorter_path[0] in longer_path:
+            return None
+        else:
+            for node in shorter_path:
+                if node in longer_path:
+                    return longer_path[longer_path.index(node)]
+    except TypeError:
+        print("longer: {}".format(longer_path))
+        print("shorter: {}".format(shorter_path))
+
+
 
 if __name__ == '__main__':
     infile = open('../data/neko.txt.cabocha', 'rt', encoding='utf8')
@@ -62,6 +87,7 @@ if __name__ == '__main__':
     # import pdb; pdb.set_trace()
     for sent in sents:
         sent2 = sent
+        paths = []
         for chunk in sent:
             noun_chunk = search_pos(chunk, pos="名詞", fmt='chunk')
             if noun_chunk:
@@ -69,15 +95,34 @@ if __name__ == '__main__':
                 for current_chunk in sent2:
                     if path_chunks[-1].dst == current_chunk.idx:
                         path_chunks.append(current_chunk)
-                noun_idxes = get_pos_idx(path_chunks, "名詞")
-                if len(noun_idxes) > 2:
-                    first_idx = noun_idxes[0]
-                    for second_idx in noun_idxes[1:]:
-                        # slice first noun chunk to last noun chunk
-                        sliced_path = path_chunks[first_idx:second_idx+1]
-                        sliced_path[1:-1] = [node.surface for node in sliced_path[1:-1]]
-                        sliced_path[0] = replace_morph(sliced_path[0], "名詞", "X")
-                        sliced_path[-1] = replace_morph(sliced_path[-1], "名詞", "Y")
-                        outfile.write(" -> ".join([node for node in sliced_path])+"\n")
+                paths.append(path_chunks)
+
+        for i, path in enumerate(paths):
+            # pattern 2 (straight path)
+            noun_idxes = get_pos_idx(path, "名詞")
+            if len(noun_idxes) > 2:
+                first_idx = noun_idxes[0]
+                for second_idx in noun_idxes[1:]:
+                    # slice first noun chunk to last noun chunk
+                    sliced_path = path[first_idx:second_idx+1]
+                    sliced_path[1:-1] = [node.surface for node in sliced_path[1:-1]]
+                    sliced_path[0] = replace_morph(sliced_path[0], "名詞", "X")
+                    sliced_path[-1] = replace_morph(sliced_path[-1], "名詞", "Y")
+                    outfile.write(" -> ".join([node for node in sliced_path])+"\n")
+            else:
+                # pattern 1 (merge branches on a node)
+                paths_cp = paths[i + 1:]
+                for path_cp in paths_cp:
+                    merge_node = does_merge(path, path_cp)
+                    if merge_node:
+                        ori_idx = path.index(merge_node)
+                        cp_idx = path_cp.index(merge_node)
+                        path_surface = [replace_morph(path[0], "名詞", "X")]\
+                                       + [c.surface for c in path[1:ori_idx]]
+                        path_cp_surface = [replace_morph(path_cp[0], "名詞", "Y")]\
+                                          + [c.surface for c in path_cp[1:cp_idx]]
+                        outfile.write("{} | {} | {}\n"\
+                                      .format(" -> ".join(path_surface),
+                                              " -> ".join(path_cp_surface), merge_node.surface))
 
     outfile.close()
