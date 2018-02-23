@@ -6,17 +6,10 @@
 '''
 import pickle as pkl
 import sys
-import os
-from numpy import linalg as LA
-import numpy as np
-
-def cos_sim(vec1, vec2):
-    return np.dot(vec1, vec2) / (LA.norm(vec1) * LA.norm(vec2))
-
+from no85 import SemanticSpace
 
 if __name__ == '__main__':
     with open(sys.argv[1], 'rb') as f:
-        X = pkl.load(f)
-    
-    sim = cos_sim(X['United_States'], X['U.S'])
-    print(sim)
+        model = pkl.load(f)
+
+    print(model.similarity('United_States', 'U.S'))

@@ -7,11 +7,11 @@
 '''
 import pickle as pkl
 import sys
-import os
+from no85 import SemanticSpace
 
 if __name__ == '__main__':
     infile = sys.argv[1]
     with open(infile, 'rb') as f:
-        X = pkl.load(f)
+        model = pkl.load(f)
     
-    print(X['United_States'])
+    print(model.matrix['United_States'])
