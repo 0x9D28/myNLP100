@@ -16,10 +16,7 @@ class SemanticSpace(object):
 
     def cos_sim(self, vec1, vec2):
         sim = np.dot(vec1, vec2) / (LA.norm(vec1) * LA.norm(vec2))
-        if sim > 0:
-            return sim
-        else:
-            return 0
+        return sim if sim > 0 else 0
 
     def similarity(self, term1, term2):
         return self.cos_sim(self.matrix[term1], self.matrix[term2])
