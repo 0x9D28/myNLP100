@@ -25,7 +25,8 @@ if __name__ == '__main__':
           .format(model.similarity('United_States', 'U.S')))
     # no.88: sim rank with England
     print("Most similar words with England: {}"\
-          .format(model.most_similar(positive=['England'])))
+          .format(model.most_similar(positive=['England'], topn=10)))
     # no89: sim rank with Spain - Madrid + Athens
     print("Most similar word with Spain - Madrid + Athens: {}"\
-          .format(model.most_similar(positive=['Spain', 'Athens'], negative=['Madrid'])))
+          .format(model.most_similar(positive=['Spain', 'Athens'],
+                                     negative=['Madrid'], topn=10)))
