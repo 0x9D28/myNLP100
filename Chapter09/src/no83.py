@@ -6,14 +6,15 @@
 ・f(∗,c): 文脈語cの出現回数
 ・N: 単語と文脈語のペアの総出現回数
 
-$ python3 no83.py [input no.82 output] [number of no.82 output lines (gotten by wc command)] [necessary input amount assigned percentile (0, 100]] [output directory]
+$ python3 no83.py [input no.82's output] [number of no.82 output lines (gotten by wc command)]
+ [necessary input amount assigned percentile (0, 100]] [output directory]
 '''
 import sys
 from collections import defaultdict, Counter
 import os
 import pickle
 
-infile = open(sys.argv[1], 'rt')
+infile = open(sys.argv[1], 'rt', encoding='utf8')
 outdir = sys.argv[4]
 ftc = defaultdict(Counter)
 ft = Counter()

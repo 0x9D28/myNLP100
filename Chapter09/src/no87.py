@@ -15,11 +15,8 @@ def cos_sim(vec1, vec2):
 
 
 if __name__ == '__main__':
-    indir = sys.argv[1]
-    with open(os.path.join(indir, 'svd-X.pkl'), 'rb') as f:
+    with open(sys.argv[1], 'rb') as f:
         X = pkl.load(f)
-    with open(os.path.join(indir, 'idx.pkl'), 'rb') as f:
-        idx = pkl.load(f)
     
-    sim = cos_sim(X[idx['United_States']], X[idx['U.S']])
+    sim = cos_sim(X['United_States'], X['U.S'])
     print(sim)

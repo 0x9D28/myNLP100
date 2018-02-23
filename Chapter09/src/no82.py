@@ -10,8 +10,8 @@
 import sys
 import random
 
-infile = open(sys.argv[1], 'rt')
-outfile = open(sys.argv[2], 'wt')
+infile = open(sys.argv[1], 'rt', encoding='utf8')
+outfile = open(sys.argv[2], 'wt', encoding='utf8')
 
 for j, line in enumerate(infile):
     line = line.split()

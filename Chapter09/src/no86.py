@@ -10,10 +10,8 @@ import sys
 import os
 
 if __name__ == '__main__':
-    indir = sys.argv[1]
-    with open(os.path.join(indir, 'svd-X.pkl'), 'rb') as f:
+    infile = sys.argv[1]
+    with open(infile, 'rb') as f:
         X = pkl.load(f)
-    with open(os.path.join(indir, 'idx.pkl'), 'rb') as f:
-        idx = pkl.load(f)
     
-    print(X[idx['United_States']])
+    print(X['United_States'])

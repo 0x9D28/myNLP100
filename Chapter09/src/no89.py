@@ -17,16 +17,13 @@ def cos_sim(vec1, vec2):
 
 
 if __name__ == '__main__':
-    indir = sys.argv[1]
-    with open(os.path.join(indir, 'svd-X.pkl'), 'rb') as f:
+    with open(sys.argv[1], 'rb') as f:
         X = pkl.load(f)
-    with open(os.path.join(indir, 'idx.pkl'), 'rb') as f:
-        idx = pkl.load(f)
     
     rslt_dic = {}
-    formula_vec = X[idx["Spain"]] - X[idx["Madrid"]] + X[idx["Athens"]]
-    for term, idx in idx.items():
-        rslt_dic[term] = cos_sim(formula_vec, X[idx])
+    formula_vec = X["Spain"] - X["Madrid"] + X["Athens"]
+    for term, vec in X.items():
+        rslt_dic[term] = cos_sim(formula_vec, vec)
     
     for i, t_s in enumerate(sorted(rslt_dic.items(), key=lambda x: -x[1]), 
                             start=1):

@@ -31,9 +31,9 @@ def join_compounds(string, compounds, sep="_"):
 
 
 if __name__ == '__main__':
-    infile1 = open(sys.argv[1], 'rt')
-    infile2 = open(sys.argv[2], 'rt')
-    outfile = open(sys.argv[3], 'wt')
+    infile1 = open(sys.argv[1], 'rt', encoding='utf8')
+    infile2 = open(sys.argv[2], 'rt', encoding='utf8')
+    outfile = open(sys.argv[3], 'wt', encoding='utf8')
     countries = [country.rstrip('\n') for country in infile2]
     for i, line in enumerate(infile1):
         outfile.write(join_compounds(line, countries))

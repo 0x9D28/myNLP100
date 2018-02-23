@@ -19,21 +19,17 @@ def cos_sim(vec1, vec2):
         return 0
 
 if __name__ == '__main__':
-    indir = sys.argv[1]
-    with open(os.path.join(indir, 'svd-X.pkl'), 'rb') as f:
+    with open(sys.argv[1], 'rb') as f:
         X = pkl.load(f)
-    with open(os.path.join(indir, 'idx.pkl'), 'rb') as f:
-        idx = pkl.load(f)
-    
     rslt_dic = {}
-    england_vec = X[idx[sys.argv[2]]]
-    for term, idx in idx.items():
-        rslt_dic[term] = cos_sim(england_vec, X[idx])
+    england_vec = X['England']
+    for term, vec in X.items():
+        rslt_dic[term] = cos_sim(england_vec, vec)
     
-    for i, t_s in enumerate(sorted(rslt_dic.items(), key=lambda x: -x[1]),
+    for i, term_sim in enumerate(sorted(rslt_dic.items(), key=lambda x: -x[1]),
                             start=0):
-        term, sim = t_s
-        if term == sys.argv[2]:
+        term, sim = term_sim
+        if term == 'England':
             continue
         print("{}. {}: {}".format(i, term, sim))
         if i >= 10:
