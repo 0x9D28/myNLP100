@@ -21,8 +21,8 @@ import sys
 if __name__ == '__main__':
     infile = open(sys.argv[1], 'rt')
     sents = load_cabocha(infile)
-    infile.close()
     outfile = open(sys.argv[2], 'wt')
+
     for sent in sents:
         sent2 = sent
         for chunk in sent:
@@ -34,5 +34,5 @@ if __name__ == '__main__':
                         path_chunks.append(current_chunk)
                 if len(path_chunks) > 1:
                     outfile.write(" -> ".join([node.surface for node in path_chunks])+"\n")
-
+    infile.close()
     outfile.close()

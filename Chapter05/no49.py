@@ -77,9 +77,8 @@ def does_merge(path1, path2):
 if __name__ == '__main__':
     infile = open(sys.argv[1], 'rt')
     sents = load_cabocha(infile)
-    infile.close()
     outfile = open(sys.argv[2], 'wt')
-    # import pdb; pdb.set_trace()
+
     for sent in sents:
         sent2 = sent
         paths = []
@@ -119,5 +118,5 @@ if __name__ == '__main__':
                         outfile.write("{} | {} | {}\n"\
                                       .format(" -> ".join(path_surface),
                                               " -> ".join(path_cp_surface), merge_node.surface))
-
+    infile.close()
     outfile.close()

@@ -33,14 +33,18 @@ def search_pos(chunks, pos, pos1='', base='', fmt='bool'):
 if __name__ == '__main__':
     f = open(sys.argv[1], 'rt')
     sents = load_cabocha(f)
-    f.close()
+
     # import pdb; pdb.set_trace()
     for sent in sents:
         sent2 = sent
         for chunk in sent:
             for chunk2 in sent2:
-                if chunk.dst == chunk2.idx and search_pos(chunk, "名詞") and search_pos(chunk2, "動詞"):
-                    surface = "".join([morph.surface for morph in chunk.morphs if morph.pos != "記号"])
-                    surface2 = "".join([morph.surface for morph in chunk2.morphs if morph.pos != "記号"])
+                if chunk.dst == chunk2.idx and search_pos(chunk, "名詞")\
+                        and search_pos(chunk2, "動詞"):
+                    surface = "".join([morph.surface for morph in chunk.morphs
+                                       if morph.pos != "記号"])
+                    surface2 = "".join([morph.surface for morph in chunk2.morphs
+                                        if morph.pos != "記号"])
                     print("{}\t{}".format(surface, surface2))
                     break
+    f.close()

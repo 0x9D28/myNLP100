@@ -25,20 +25,21 @@ import sys
 if __name__ == '__main__':
     infile = open(sys.argv[1], 'rt')
     sents = load_cabocha(infile)
-    infile.close()
+
     outfile = open(sys.argv[2], 'wt')
     # import pdb; pdb.set_trace()
     for sent in sents:
         sent2 = sent
         for chunk in sent:
-            predicate = search_pos(chunk, "動詞", bool=False)
+            predicate = search_pos(chunk, "動詞", fmt="morph")
             if predicate:
                 particles = []
                 for chunk2 in sent2:
-                    particle = search_pos(chunk2, "助詞", bool=False)
+                    particle = search_pos(chunk2, "助詞", fmt="morph")
                     if particle and chunk2.dst == chunk.idx:
                         particles.append(particle)
                 if particles:
                     outfile.write("{}\t{}\n".format(predicate.base,
-                                           " ".join([particle.base for particle in particles])))
+                                  " ".join([particle.base for particle in particles])))
+    infile.close()
     outfile.close()
