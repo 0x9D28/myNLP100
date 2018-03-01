@@ -13,15 +13,22 @@
 '''
 import sys
 from no40 import Morph
-import re
+
 
 class Chunk(object):
     def __init__(self, chunk_lines, headers_lines):
+        """
+        Attributes:
+            idx (int): index of the chunk in the sentence
+            dst (int): index of the distribution chunk in the sentence
+            srcs (list): list of indexes of the source chunks in the sentence
+            morphs (list): list of morph class objects
+            surface (str): surface of the chunk
+        """
         header = chunk_lines[0].split()
         self.idx = int(header[1])
         self.dst = int(header[2].replace("D", ""))
         srcs = []
-        # import pdb; pdb.set_trace()
         for header_line in headers_lines:
             header_line = header_line.split()
             if self.idx == int(header_line[2].replace("D", "")):
@@ -29,6 +36,7 @@ class Chunk(object):
         self.srcs = srcs
         self.morphs = [Morph(line) for line in chunk_lines[1:]]
         self.surface = "".join([morph.surface for morph in self.morphs])
+
     def __repr__(self):
         surfaces = "".join([morph.surface for morph in self.morphs])
         srcs = ",".join([str(src) for src in self.srcs]) if self.srcs else "nan"
