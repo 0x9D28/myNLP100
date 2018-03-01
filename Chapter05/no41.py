@@ -45,7 +45,7 @@ class Chunk(object):
 
 
 def load_cabocha(lines):
-    sents, sent, chunk_lines, headers = [], [], [], []
+    sent, chunk_lines, headers = [], [], []
     for line in lines:
         if line[0] == "*":
             if chunk_lines:
@@ -55,18 +55,19 @@ def load_cabocha(lines):
         elif line.rstrip("\n") == "EOS":
             if chunk_lines:
                 sent.append(Chunk(chunk_lines, headers))
-                sents.append(sent)
+                yield sent
             sent = []
             chunk_lines = []
             headers = []
         else:
             chunk_lines.append(line)
-    return sents
 
 
 if __name__ == '__main__':
     f = open(sys.argv[1], 'rt')
     sents = load_cabocha(f)
+    for i, sent in enumerate(sents, start=1):
+        if i == 8:
+            print(sent)
+            break
     f.close()
-    # import pdb; pdb.set_trace()
-    print(*sents[8], sep="\n")
