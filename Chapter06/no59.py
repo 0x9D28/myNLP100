@@ -15,14 +15,13 @@ class SExpressionParser(object):
     def __init__(self, sexp):
         self.sexp = sexp
 
-
     @classmethod
     def parse_sexp(cls, string):
         """
         copy and paste from https://en.wikipedia.org/wiki/S-expression
         and rewrite a few lines for applying to class method
         >>> parse_sexp("(+ 5 (+ 3 5))")
-        [['+', '5', ['+', '3', '5']]]
+        ['+', '5', ['+', '3', '5']]
         """
         sexp = [[]]
         word = ''
@@ -44,16 +43,50 @@ class SExpressionParser(object):
                 in_str = not in_str
             else:
                 word += char
-        SEparser = cls(sexp[0])
+        SEparser = cls(sexp[0][0])
         return SEparser
 
-    def find_all(self, tag):
-        pass
+    def print_phrases(self, tag):
+        """print tag's phrases"""
+        if self._search(self.sexp, tag):
+            self._recursive_print(self.sexp, tag)
+        else:
+            return ["<< Not found {} >>".format(tag)]
+
+    def _search(self, sexp, tag):
+        """search tag in sexp. return True or False"""
+        if sexp == tag:
+            return True
+        return isinstance(sexp, list) \
+            and any(self._search(subsexp, tag) for subsexp in sexp)
+
+    def _recursive_print(self, sexp, tag):
+        """recursive search tag's phrases, and print them."""
+        if isinstance(sexp, str):
+            return None
+        elif isinstance(sexp, list) and sexp[0] == tag:
+            self._flat_print(sexp)
+            print()
+        return [self._recursive_print(subsexp, tag) for subsexp in sexp]
+
+    def _flat_print(self, sexp):
+        """print words in sexp, ignoring tags"""
+        if isinstance(sexp, str):
+            return None
+        elif isinstance(sexp, list) and len(sexp) == 2 \
+                and all(isinstance(elem, str) for elem in sexp):
+            print(sexp[1], end=' ')
+        return [self._flat_print(subsexp) for subsexp in sexp]
+
+
 
 
 if __name__ == '__main__':
     tree = ET.parse(sys.argv[1])
     root = tree.getroot()
     for sexp in root.iter('parse') :
-        NP_list = SExpressionParser.parse_sexp(sexp.text).find_all('NP')
-        print(*NP_list, sep='\n')
+        print("<< S-Expression >>")
+        print(sexp.text)
+        print("<< Noun Phrases >>")
+        SExpressionParser.parse_sexp(sexp.text).print_phrases('NP')
+        print()
